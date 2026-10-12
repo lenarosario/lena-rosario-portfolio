@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lena Rosario, Mechanical Engineer</title>
+<meta name="description" content="Portfolio of Lena Rosario, mechanical engineer and M.S. candidate at CU Boulder. Hot tap design for Los Alamos, hydraulic modeling for Denver Water, CAD and fabrication.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* =========================================================
+   COLORS — change these to re-tint the whole site
+   ========================================================= */
+:root {
+  --paper: #EDEFE8;      /* lichen-grey page */
+  --paper-2: #E3E6DC;    /* slightly deeper panels */
+  --ink: #1A1F1B;        /* forest-black text */
+  --ink-soft: #4E5850;   /* secondary text */
+  --rule: #C6CCBF;       /* hairlines */
+  --contour: #A3B09C;    /* topo lines */
+  --yellow: #F2C200;     /* the frame */
+  --plate: #151915;      /* dark feature plate */
+  --plate-ink: #E6E9E0;
+  --water: #3D6B78;      /* chart line */
+  --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --sans: "Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #121613; --paper-2: #1A1F1B; --ink: #E5E8DF; --ink-soft: #A2AC9F;
+    --rule: #2D362F; --contour: #34413A; --yellow: #E6B800; --plate: #0B0E0C;
+    --plate-ink: #E5E8DF; --water: #7FB3C1; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #121613; --paper-2: #1A1F1B; --ink: #E5E8DF; --ink-soft: #A2AC9F;
+  --rule: #2D362F; --contour: #34413A; --yellow: #E6B800; --plate: #0B0E0C;
+  --plate-ink: #E5E8DF; --water: #7FB3C1; color-scheme: dark;
+}
+
+/* ---------- base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font: 400 17px/1.6 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+img, video { max-width: 100%; height: auto; display: block; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { text-decoration-color: var(--yellow); }
+:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 400; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.wrap { max-width: 1240px; margin-inline: auto; padding-inline: clamp(16px, 4vw, 48px); }
+.mono { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+.soft { color: var(--ink-soft); }
+
+/* ---------- masthead ---------- */
+.mast {
+  display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: baseline; justify-content: space-between;
+  padding-block: 22px; border-bottom: 1px solid var(--rule);
+}
+.mast .name { font-family: var(--serif); font-size: 20px; letter-spacing: .01em; }
+.mast nav { display: flex; gap: 22px; flex-wrap: wrap; }
+.mast nav a { text-decoration: none; font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+.mast nav a:hover { box-shadow: inset 0 -2px 0 var(--yellow); }
+.mast nav a.nav-resume { box-shadow: inset 0 -2px 0 var(--yellow); }
+
+/* ---------- hero ---------- */
+.hero { position: relative; display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; padding-block: 56px 72px; }
+#topo { position: absolute; inset: 0 calc(-1 * clamp(16px, 4vw, 48px)); width: auto; height: 100%; pointer-events: none; z-index: 0; }
+.hero > *:not(canvas) { position: relative; z-index: 1; }
+.hero-text { grid-column: 1 / 8; align-self: end; }
+.dateline { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-bottom: 28px; color: var(--ink-soft); }
+.dateline span:first-child { color: var(--ink); }
+.hero h1 { font-size: clamp(64px, 11vw, 148px); line-height: .86; letter-spacing: -.025em; font-weight: 350; font-variation-settings: "opsz" 72; }
+.hero h1 em { display: block; font-style: italic; padding-left: .55em; font-weight: 300; }
+.lede { margin-top: 36px; max-width: 34ch; font-family: var(--serif); font-size: clamp(20px, 2vw, 25px); line-height: 1.4; }
+.lede-meta { margin-top: 36px; max-width: 46ch; font-family: var(--serif); font-size: clamp(18px, 1.7vw, 21px); line-height: 1.5; }
+.hero-photo { grid-column: 9 / 13; margin: 0; align-self: start; margin-top: 40px; }
+.frame { position: relative; }
+.frame::before { /* yellow border, offset like a magazine cover */
+  content: ""; position: absolute; inset: -14px 14px 14px -14px; border: 10px solid var(--yellow); z-index: -1;
+}
+.frame img { aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 28%; width: 100%; filter: saturate(.92); }
+.hero-photo figcaption { margin-top: 26px; display: grid; gap: 2px; }
+
+/* ---------- contents ---------- */
+.contents { display: grid; grid-template-columns: 180px 1fr; gap: 24px; padding-block: 28px; border-block: 1px solid var(--ink); }
+.contents ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 28px; }
+.contents a { text-decoration: none; display: grid; gap: 6px; }
+.contents a:hover .t { text-decoration: underline; text-decoration-color: var(--yellow); text-decoration-thickness: 2px; }
+.contents .t { font-family: var(--serif); font-size: 21px; line-height: 1.2; }
+
+/* ---------- features (shared) ---------- */
+.feature { padding-block: clamp(64px, 9vw, 120px); }
+.kicker { display: flex; gap: 14px; align-items: center; margin-bottom: 20px; }
+.kicker::before { content: ""; width: 26px; height: 10px; background: var(--yellow); }
+.feature h2 { font-size: clamp(36px, 5.2vw, 68px); line-height: 1.02; letter-spacing: -.018em; font-weight: 350; }
+.feature h2 em { font-weight: 300; }
+.deck { font-family: var(--serif); font-style: italic; font-size: clamp(19px, 1.8vw, 23px); line-height: 1.45; color: var(--ink-soft); max-width: 46ch; margin-top: 18px; }
+.body { display: grid; gap: 16px; max-width: 62ch; }
+figure { margin: 0; }
+figcaption { font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); margin-top: 10px; }
+figcaption b { font-family: var(--mono); font-weight: 500; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); margin-right: 6px; }
+.role { margin-top: 24px; display: inline-block; padding: 6px 10px; border: 1px solid currentColor; }
+
+/* ---------- feature 1: hot tap (dark plate) ---------- */
+.plate { background: var(--plate); color: var(--plate-ink); }
+.plate .deck, .plate figcaption { color: #A7B0A3; }
+.plate figcaption b { color: var(--plate-ink); }
+.ht-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 28px; }
+.ht-head { grid-column: 1 / 9; }
+.ht-hero { grid-column: 1 / 9; margin-top: 24px; }
+.ht-hero img { width: 100%; }
+.ht-side { grid-column: 9 / 13; grid-row: 1 / span 2; align-self: end; display: grid; gap: 30px; }
+.stat { border-top: 1px solid #3A443C; padding-top: 16px; }
+.stat .n { font-family: var(--serif); font-size: clamp(56px, 6vw, 84px); line-height: 1; font-weight: 300; color: var(--yellow); letter-spacing: -.02em; }
+.stat p { font-size: 14.5px; margin-top: 8px; color: #C4CBC0; }
+.spec { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 12.5px; }
+.spec caption { text-align: left; padding-bottom: 8px; letter-spacing: .08em; text-transform: uppercase; font-size: 11px; color: #A7B0A3; }
+.spec td { padding: 7px 0; border-top: 1px solid #2C352E; vertical-align: top; }
+.spec td:last-child { text-align: right; color: var(--plate-ink); }
+.spec td:first-child { color: #A7B0A3; padding-right: 12px; }
+.ht-text { grid-column: 1 / 7; margin-top: 40px; }
+.ht-strip { grid-column: 7 / 13; margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-content: start; }
+.ht-strip img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.ht-strip img.whole { object-fit: contain; background: #0F120F; }
+.ht-drawing { grid-column: 1 / 8; margin-top: 48px; }
+.ht-machining { grid-column: 9 / 13; align-self: center; display: grid; gap: 14px; margin-top: 48px; }
+.ht-machining .mono { color: #A7B0A3; }
+.ht-machining h3 { font-size: clamp(28px, 2.6vw, 36px); line-height: 1.1; }
+.ht-machining .body { font-size: 16px; }
+.plate .sheet { border-color: #2C352E; }
+.plate a { color: var(--plate-ink); }
+
+/* ---------- feature 2: denver water ---------- */
+.dw { display: grid; grid-template-columns: repeat(12, 1fr); gap: 28px; }
+.dw-head { grid-column: 1 / 6; }
+.dw-head .body { margin-top: 28px; }
+.dw-chart { grid-column: 6 / 13; align-self: center; background: var(--paper-2); padding: clamp(16px, 2.5vw, 28px); }
+.dw-chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.dw-chart .chart-title { font-family: var(--serif); font-size: 19px; margin-bottom: 4px; }
+.ax { font-family: var(--mono); font-size: 11px; fill: var(--ink-soft); }
+.note-txt { font-family: var(--serif); font-style: italic; font-size: 14px; fill: var(--ink); }
+
+.dw-schematic { grid-column: 1 / 10; margin-top: 36px; }
+.dw-note { grid-column: 10 / 13; align-self: center; display: grid; gap: 12px; font-family: var(--serif); font-size: 19px; line-height: 1.45; }
+.dw-note .mono { font-family: var(--mono); }
+.sheet { background: #fff; padding: clamp(10px, 2.5vw, 32px); border: 1px solid var(--rule); }
+.sheet img { width: 100%; }
+
+/* ---------- feature: chilled water plant ---------- */
+.chill { background: var(--paper-2); }
+.ch-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 28px; }
+.ch-head { grid-column: 1 / 10; margin-bottom: 12px; }
+.ch-fig { grid-column: 1 / 8; }
+.ch-text { grid-column: 8 / 13; display: grid; gap: 32px; align-content: start; }
+.ch-toggle { display: flex; flex-wrap: wrap; gap: 0; margin-bottom: 12px; }
+.ch-toggle button {
+  font: 500 11.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; cursor: pointer;
+  background: transparent; color: var(--ink-soft); border: 1px solid var(--rule); padding: 9px 14px;
+}
+.ch-toggle button + button { border-left: 0; }
+.ch-toggle button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.ch-figs { margin: 0; display: grid; gap: 0; }
+.ch-figs > div { display: grid; gap: 2px; padding-block: 12px; border-top: 1px solid var(--rule); }
+.ch-figs dt { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.ch-figs dd { margin: 0; font-family: var(--serif); font-size: 26px; line-height: 1.2; font-variant-numeric: tabular-nums; }
+
+/* ---------- feature: trouble! ---------- */
+.tr { display: grid; grid-template-columns: repeat(12, 1fr); gap: 28px; align-items: start; }
+.tr-board { grid-column: 1 / 7; align-self: center; }
+.tr-board img { width: 100%; filter: drop-shadow(0 18px 22px rgba(20, 25, 20, .22)); }
+.tr-text { grid-column: 7 / 13; display: grid; gap: 24px; }
+.tr-schematic img { width: 100%; background: #fff; border: 1px solid var(--rule); }
+.tr-pcb { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.tr-pcb img { width: 100%; aspect-ratio: 5 / 4; object-fit: cover; }
+
+/* ---------- about ---------- */
+.about { display: grid; grid-template-columns: repeat(12, 1fr); gap: 28px; padding-block: 24px 72px; }
+.about-label { grid-column: 1 / 3; padding-top: 10px; }
+.about-main { grid-column: 3 / 9; }
+.about-main h2 { font-size: clamp(30px, 3.4vw, 44px); line-height: 1.12; font-weight: 350; letter-spacing: -.01em; }
+.about-main .body { margin-top: 26px; }
+.about-facts { grid-column: 10 / 13; margin: 0; align-self: end; }
+.about-facts > div, .gd-parts > div { display: grid; gap: 2px; padding-block: 12px; border-top: 1px solid var(--rule); }
+.about-facts dt, .gd-parts dt { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.about-facts dd, .gd-parts dd { margin: 0; font-family: var(--serif); font-size: 19px; line-height: 1.3; }
+
+/* ---------- essay ---------- */
+.essay { background: var(--paper-2); }
+.es-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 28px; }
+.es-head { grid-column: 1 / 10; margin-bottom: 20px; }
+.es-quote { grid-column: 1 / 6; margin: 0; padding-top: 22px; border-top: 10px solid var(--yellow); align-self: start; }
+.es-quote p { font-family: var(--serif); font-style: italic; font-weight: 300; font-size: clamp(26px, 2.7vw, 36px); line-height: 1.25; }
+.es-text { grid-column: 7 / 13; }
+
+/* ---------- feature 3: msr stove ---------- */
+.msr-head { display: grid; grid-template-columns: repeat(12, 1fr); gap: 28px; align-items: end; }
+.msr-head > div:first-child { grid-column: 1 / 8; }
+.msr-head .body { grid-column: 8 / 13; }
+.msr-compare { margin-top: 48px; background: #fff; padding: clamp(12px, 3vw, 36px); }
+.msr-compare img { width: 100%; }
+.msr-row { margin-top: 48px; display: grid; grid-template-columns: 4fr 4fr 3fr; gap: 28px; align-items: start; }
+.msr-row figure img { background: #fff; width: 100%; aspect-ratio: 1; object-fit: contain; }
+.msr-drawing { margin-top: 48px; }
+.field-note {
+  font-family: var(--serif); font-style: italic; font-size: 22px; line-height: 1.35;
+  border-left: 3px solid var(--yellow); padding-left: 18px; align-self: center;
+}
+
+/* ---------- feature 4: gear drive ---------- */
+.gd { display: grid; grid-template-columns: repeat(12, 1fr); gap: 28px; }
+.gd-media { grid-column: 1 / 8; display: grid; gap: 28px; }
+.gd-media video, .gd-media .white img { width: 100%; background: #fff; }
+.gd-side { margin-top: 16px; display: grid; gap: 28px; align-content: start; }
+.gd-side img { background: #fff; width: 100%; max-width: 240px; }
+.gd-parts { margin: 0; }
+.gd-text { grid-column: 9 / 13; display: grid; gap: 22px; align-content: start; }
+.gd-text .body { margin-top: 6px; }
+
+/* ---------- brief ---------- */
+.briefs { display: grid; grid-template-columns: 180px 1fr; gap: 28px; padding-block: 40px 80px; border-top: 1px solid var(--rule); }
+.briefs h3 { font-size: 26px; margin-bottom: 10px; }
+.briefs p { font-size: 15.5px; max-width: 48ch; }
+
+/* ---------- logbook ---------- */
+.section-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px; border-bottom: 1px solid var(--ink); padding-bottom: 14px; }
+.section-head h2 { font-size: clamp(40px, 5vw, 60px); font-weight: 350; letter-spacing: -.015em; }
+.log { list-style: none; margin: 0; padding: 0; }
+.log-group { display: flex; align-items: center; gap: 12px; margin: 40px 0 0; padding-bottom: 10px; border-bottom: 1px solid var(--ink);
+  font-family: var(--mono); font-weight: 500; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+.log-group::before { content: ""; width: 18px; height: 8px; background: var(--yellow); }
+.log li { display: grid; grid-template-columns: 180px minmax(0, 1fr) minmax(0, 1.3fr); gap: 28px; padding-block: 26px; border-bottom: 1px solid var(--rule); }
+.log .when { font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums; color: var(--ink-soft); padding-top: 6px; }
+.log h3 { font-size: 25px; line-height: 1.2; }
+.log .where { font-size: 14.5px; color: var(--ink-soft); margin-top: 4px; }
+.log ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 15.5px; }
+.log ul li { display: list-item; padding: 0; border: 0; }
+.log ul li::marker { color: var(--ink-soft); }
+
+/* ---------- credentials ---------- */
+.creds { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(28px, 5vw, 72px); padding-block: 72px; }
+.school { padding-block: 20px; border-bottom: 1px solid var(--rule); display: grid; gap: 4px; }
+.school h3 { font-size: 23px; line-height: 1.25; }
+.school .mono { color: var(--ink-soft); }
+.skills dl { margin: 0; display: grid; gap: 18px; }
+.skills dt { font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.skills dd { margin: 4px 0 0; font-size: 15.5px; }
+.cert { display: flex; justify-content: space-between; gap: 16px; padding-block: 12px; border-bottom: 1px solid var(--rule); font-size: 15.5px; }
+.cert span:last-child { font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); white-space: nowrap; }
+.sub { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; margin: 36px 0 6px; }
+.sub:first-child { margin-top: 0; }
+
+/* ---------- contact / footer ---------- */
+.contact { background: var(--paper-2); padding-block: clamp(56px, 8vw, 100px) 32px; }
+.contact-grid { display: grid; grid-template-columns: 7fr 5fr; gap: 40px; align-items: end; }
+.contact h2 { font-size: clamp(40px, 5vw, 60px); line-height: 1; letter-spacing: -.015em; font-weight: 350; }
+.contact-links { display: grid; gap: 14px; font-size: 18px; }
+.contact-links a { font-family: var(--serif); font-size: clamp(20px, 2vw, 26px); }
+.copy-btn { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; background: none; border: 1px solid var(--ink-soft); color: var(--ink); padding: 5px 9px; cursor: pointer; margin-left: 10px; vertical-align: middle; }
+.copy-btn:hover { border-color: var(--yellow); }
+.off { margin-top: 64px; display: grid; grid-template-columns: 180px 1fr; gap: 28px; align-items: center; }
+.profile { width: 100%; height: 70px; display: block; }
+.foot { margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; color: var(--ink-soft); }
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  .hero-text, .hero-photo, .ht-head, .ht-hero, .ht-side, .ht-text, .ht-strip,
+  .dw-head, .dw-chart, .dw-schematic, .dw-note, .msr-head > div:first-child, .msr-head .body, .gd-media, .gd-text,
+  .ch-head, .ch-fig, .ch-text, .tr-board, .tr-text, .ht-drawing, .ht-machining,
+  .about-label, .about-main, .about-facts, .gd-drawing, .gd-side, .es-head, .es-quote, .es-text { grid-column: 1 / -1; grid-row: auto; }
+  .tr-board { max-width: 480px; }
+  .hero-photo { max-width: 360px; margin-top: 8px; margin-left: 14px; }
+  .contents, .briefs, .off { grid-template-columns: 1fr; }
+  .contents ol { grid-template-columns: 1fr 1fr; }
+  .msr-row { grid-template-columns: 1fr 1fr; }
+  .msr-row .field-note { grid-column: 1 / -1; }
+  .log li { grid-template-columns: 1fr; gap: 10px; }
+  .creds, .contact-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  body { font-size: 16px; }
+  .contents ol, .gd-pair, .ht-strip, .msr-row { grid-template-columns: 1fr; }
+  .hero h1 em { padding-left: .3em; }
+  .tr-pcb { grid-template-columns: 1fr 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     MASTHEAD
+     ========================================================= -->
+<div class="wrap">
+  <header class="mast">
+    <span class="name">Lena Rosario</span>
+    <nav aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#logbook">Experience</a>
+      <a href="#credentials">Credentials</a>
+      <a href="#contact">Contact</a>
+      <a href="files/Lena-Rosario-Resume.pdf" target="_blank" rel="noopener" class="nav-resume">Resume ↗</a>
+    </nav>
+  </header>
+
+  <!-- =========================================================
+       HERO
+       ========================================================= -->
+  <section class="hero" aria-label="Introduction">
+    <canvas id="topo" aria-hidden="true"></canvas>
+    <div class="hero-text">
+      <p class="dateline mono"><span>Mechanical Engineer</span><span>Boulder, Colorado</span></p>
+      <h1>Lena <em>Rosario</em></h1>
+      <p class="lede-meta">Engineering intern at Integrated Water Services and M.S. candidate in Mechanical Engineering at CU Boulder. Previous internships in water infrastructure design and skilled in first-principles system modeling.</p>
+    </div>
+    <figure class="hero-photo">
+      <div class="frame"><img src="images/lena-rosario.jpg" alt="Portrait of Lena Rosario" width="820" height="1230"></div>
+      <figcaption>
+        <span class="mono">B.S. Mechanical Engineering, cum laude, 2026</span>
+        <span class="mono soft">M.S. expected May 2027</span>
+      </figcaption>
+    </figure>
+  </section>
+
+  <!-- =========================================================
+       ABOUT ME
+       ========================================================= -->
+  <section class="about" id="about" aria-labelledby="aboutTitle">
+    <p class="mono about-label">About</p>
+    <div class="about-main">
+      <h2 id="aboutTitle">I like engineering I can hold, and systems big enough to <em>matter.</em></h2>
+      <div class="body">
+        <p>I'm a mechanical engineering student at the University of Colorado Boulder, where I earned my B.S. cum laude in 2026 and am now finishing an M.S. with a Leadership &amp; Management Certificate.</p>
+        <p>I've interned at Denver Water and now at Integrated Water Services, and my graduate coursework centers on sustainable energy, thermal systems modeling and leadership courses. I bring collaboration, iterative design, and creative problem solving to all the teams I work on. As a Herbst Program Fellow I wrote about what sustainability should mean in practice for engineers, and I've taught Statics &amp; Structures as a course assistant.</p>
+        <p>Outside of work I'm usually in the mountains: backcountry skiing, backpacking, hiking or running. The stove reverse-engineered further down this page comes on every trip. I also crochet, cook, and travel whenever I can, including a semester studying at University College Dublin and a summer studying in Sevilla, Spain.</p>
+      </div>
+    </div>
+    <dl class="about-facts">
+      <div><dt>Now</dt><dd>Engineering Intern, Integrated Water Services</dd></div>
+      <div><dt>Studying</dt><dd>M.S. Mechanical Engineering, CU Boulder, May 2027</dd></div>
+      <div><dt>Certified</dt><dd>FE Exam (Mechanical), SOLIDWORKS CSWA</dd></div>
+      <div><dt>Focus</dt><dd>System modeling and design, hands-on fabrication</dd></div>
+    </dl>
+  </section>
+
+  <!-- =========================================================
+       CONTENTS
+       ========================================================= -->
+  <nav class="contents" id="work" aria-label="Projects">
+    <p class="mono">In this portfolio</p>
+    <ol>
+      <li><a href="#hot-tap"><span class="mono soft">Los Alamos · 2026</span><span class="t">1/8-inch Mechanical Hot Tapping Device</span></a></li>
+      <li><a href="#denver-water"><span class="mono soft">Denver Water · 2025</span><span class="t">Reservoir Capacity and Head Loss Model</span></a></li>
+      <li><a href="#chiller"><span class="mono soft">CU Boulder · 2026</span><span class="t">Chilled water for an 83 MW data center</span></a></li>
+      <li><a href="#msr-stove"><span class="mono soft">CU Boulder · 2024</span><span class="t">Reverse-engineering a backpacking stove</span></a></li>
+      <li><a href="#gear-drive"><span class="mono soft">Dublin · 2025</span><span class="t">A planetary drive for a hospital robot</span></a></li>
+      <li><a href="#trouble"><span class="mono soft">CU Boulder · 2024</span><span class="t">Trouble!, with the dice rewired</span></a></li>
+      <li><a href="#essay"><span class="mono soft">Herbst Program · 2026</span><span class="t">What sustainability should mean for engineers</span></a></li>
+    </ol>
+  </nav>
+</div>
+
+<!-- =========================================================
+     FEATURE 1 — LANL HOT TAP
+     ========================================================= -->
+<section class="feature plate" id="hot-tap">
+  <div class="wrap ht-grid">
+    <div class="ht-head">
+      <p class="kicker mono">Senior Design · Los Alamos National Laboratory</p>
+      <h2>1/8-inch Mechanical <em>Hot Tapping Device</em></h2>
+      <p class="deck">Hot tapping is routine on oil pipelines. Our seven-person team had to do it on tubing thinner than a pencil, without losing pressure or contaminating the system.</p>
+    </div>
+    <figure class="ht-hero">
+      <img src="images/hot-tap-cad.jpg" alt="Section-view CAD render of the hot tap saddle clamped on stainless tubing, with punch and Schrader valve" width="1153" height="648">
+      <figcaption><b>Final assembly</b>Section view: saddle, SBR gasket (orange), hardened punch and Schrader access valve on 1/8" tubing.</figcaption>
+    </figure>
+    <aside class="ht-side">
+      <div class="stat">
+        <div class="n">99.85%</div>
+        <p>of initial pressure retained over 10 minutes in isolated sealing tests. The spec called for 95%.</p>
+      </div>
+      <table class="spec">
+        <caption>Spec sheet</caption>
+        <tr><td>Tube</td><td>304 SS, 0.125" OD, 0.035" wall</td></tr>
+        <tr><td>Test pressure</td><td>80 psig</td></tr>
+        <tr><td>Punch</td><td>A2 tool steel, 60 HRC</td></tr>
+        <tr><td>Tip</td><td>Ø 0.045", 0.020" fillet</td></tr>
+        <tr><td>Puncture load</td><td>≈ 220 lbf</td></tr>
+        <tr><td>Punctures per tip</td><td>20</td></tr>
+      </table>
+    </aside>
+    <div class="ht-text body">
+      <p>Los Alamos needed a way to access the internal environment of small-diameter lines while they stay live. The device clamps a stainless saddle onto the tube, seals it with a gasket and two Aflas O-rings, then drives a hardened punch through the wall. Gas exchanges through a standard Schrader valve.</p>
+      <p>Our first prototype failed in useful ways: the bottom gasket deformed the tube and the punch tip snapped in torsion. We moved to a flat-headed tip smaller than the tube's inner diameter, added a 0.020" fillet after stress analysis showed little gain past 0.018", and switched punch production from manual machining to a CNC lathe.</p>
+      <p>As Logistics Manager I handled communication among our team, the LANL sponsors and our faculty advisors while taking lead on the technical writing. As a design engineer I machined and assembled components and ran the iterative test campaign.</p>
+      <p><a href="files/LANL-Hot-Tap-Poster.pdf">View the Engineering Expo poster (PDF)</a></p>
+    </div>
+    <div class="ht-strip">
+      <figure>
+        <img class="whole" src="images/hot-tap-punctured.jpg" alt="Stainless 1/8 inch tube with a clean punched hole, held next to a labeled tag" loading="lazy" width="289" height="221">
+        <figcaption><b>Result</b>A clean puncture through the 0.035" wall.</figcaption>
+      </figure>
+      <figure>
+        <img src="images/hot-tap-conical-tips.jpg" alt="Row of conical punch tips" loading="lazy">
+        <figcaption><b>Rejected</b>Conical tips crushed the tube as diameter grew.</figcaption>
+      </figure>
+      <figure>
+        <img src="images/hot-tap-fixture.jpg" alt="O-ring test fixture on an aluminum frame" loading="lazy">
+        <figcaption><b>Fixture</b>O-ring rig to isolate leak rate.</figcaption>
+      </figure>
+      <figure>
+        <img src="images/hot-tap-saddle.jpg" alt="Wrench tightening the saddle assembly onto the stainless tube" loading="lazy">
+        <figcaption><b>First prototype</b>Torquing the saddle onto the tube.</figcaption>
+      </figure>
+    </div>
+    <figure class="ht-drawing">
+      <div class="sheet"><img src="images/hot-tap-saddle-drawing.png" alt="Engineering drawing of the bottom half saddle, part 1004, in 303 stainless steel, with a 0.125 inch semicircular cut for the tube and four 6-32 tapped holes" loading="lazy" width="2200" height="1678"></div>
+      <figcaption><b>Drawing</b>Bottom half saddle, PN 1004, Rev C.</figcaption>
+    </figure>
+    <div class="ht-machining">
+      <p class="mono">In the machine shop</p>
+      <h3>The part I made</h3>
+      <div class="body">
+        <p>This bottom saddle is the part I machined, both for our test fixtures and for the final prototypes. Making it took screw tapping for the four 6-32 holes, and surface finishing to the callout since it would need to be a pressure tight sealing surface.</p>
+        <p>I made iterations in both aluminum and stainless steel. Each material called for its own considerations, from cutting speeds to the order and choice of processes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     FEATURE 2 — DENVER WATER
+     ========================================================= -->
+<section class="feature" id="denver-water">
+  <div class="wrap dw">
+    <div class="dw-head">
+      <p class="kicker mono">Internship · Denver Water · 2025</p>
+      <h2>Reservoir Capacity and <em>Head Loss Model</em></h2>
+      <div class="body">
+        <p>During peak season, water utilities need to know how many days a reservoir can reliably meet demand. I built a hydraulic model in Engineering Equation Solver that traces head loss through every element of the outlet works, from the intake through butterfly valves, a flow tube and open channels, to the basins of the treatment plant.</p>
+        <p>The model returns flow into the plant as the water surface drops. Above roughly 5,522 ft, valves throttle delivery to the plant's maximum; below it, flow falls off with elevation.</p>
+        <p>I also sized a heater for a hydraulic power unit oil reservoir with a combined conduction, convection and radiation analysis, and cross-checked more than 20 construction drawings against current configurations.</p>
+      </div>
+    </div>
+    <figure class="dw-chart">
+      <p class="chart-title">Flow into the treatment plant vs. reservoir level</p>
+      <svg id="dwChart" viewBox="0 0 640 380" role="img" aria-label="Line chart: flow rises from about 145 million gallons per day at 5,517 feet to 450 at 5,539 feet; butterfly valve throttling caps delivery at 250 above 5,522 feet."></svg>
+      <figcaption><b>EES model</b>Redrawn from my model output. Flow in million gallons per day (MGD); water surface elevation in feet.</figcaption>
+    </figure>
+    <figure class="dw-schematic">
+      <div class="sheet"><img src="images/denver-water-schematic.png" alt="Pipe schematic from the reservoir intake through butterfly valves, a flow tube and two open channels to six flocculation/sedimentation basins, with each modeled flow and head-loss term labeled" loading="lazy" width="3520" height="2364"></div>
+      <figcaption><b>Schematic</b>Outlet works, from the reservoir intake to the flocculation/sedimentation basins.</figcaption>
+    </figure>
+    <div class="dw-note">
+      <p class="mono soft">Modeling the system</p>
+      <p>I made this schematic to model the system using the assumptions made about geometry and flow. Flow rate and head loss relationships can be seen here and reflect the assumptions used.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     FEATURE 3 — DATA CENTER CHILLED WATER PLANT
+     ========================================================= -->
+<section class="feature chill" id="chiller">
+  <div class="wrap ch-grid">
+    <div class="ch-head">
+      <p class="kicker mono">Thermodynamics II · CU Boulder · 2026</p>
+      <h2>Cooling a data center that sheds <em>83 megawatts</em> of heat</h2>
+    </div>
+    <figure class="ch-fig">
+      <div class="ch-toggle" role="group" aria-label="Operating condition">
+        <button type="button" id="chDay" aria-pressed="true">Day · 32 °C, 35% RH</button>
+        <button type="button" id="chNight" aria-pressed="false">Night · 20 °C, 42% RH</button>
+      </div>
+      <div class="sheet"><img id="chImg" src="images/chiller-plant-day.png" alt="Daytime system schematic: data center service-water loop, glycol loop, evaporative cooling tower and two-stage R-134a refrigeration cycle with every state point labeled" loading="lazy" width="1800" height="1794"></div>
+      <figcaption><b>System sketch</b>State points from our EES solution. Switch between day and night to see how much load the cooling tower can absorb on its own once the air cools.</figcaption>
+    </figure>
+    <div class="ch-text">
+      <div class="body">
+        <p>With two teammates I designed the chilled water plant for a data center rejecting 6,800 MMBTU per day. Heat leaves the servers through a service-water loop, crosses into a 30% glycol loop, and is split between an evaporative cooling tower and a two-stage R-134a refrigeration system with a flash chamber.</p>
+        <p>The cooling tower is the cheap path but depends on the weather, so the refrigeration cycle covers what the tower can't. We chose R-134a for its zero ozone depletion potential, and ran the tower at six cycles of concentration, which DOE guidance ties to 20% less makeup water and 50% less blowdown.</p>
+        <p>We modeled the day and night cases separately in Engineering Equation Solver and closed every energy balance to within 10<sup>−5</sup> kW.</p>
+      </div>
+      <dl class="ch-figs">
+        <div><dt>Refrigeration COP (day)</dt><dd>12.57</dd></div>
+        <div><dt>Condenser heat rejected</dt><dd>39,499 kW day <span class="soft">/</span> 2,816 kW night</dd></div>
+        <div><dt>Makeup water (day)</dt><dd>252,086 gal</dd></div>
+        <div><dt>Annual operating cost</dt><dd>$1,910,707</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     FEATURE 3 — MSR STOVE
+     ========================================================= -->
+<section class="feature" id="msr-stove">
+  <div class="wrap">
+    <div class="msr-head">
+      <div>
+        <p class="kicker mono">Computer-Aided Design · CU Boulder</p>
+        <h2>The stove from my pack, <em>rebuilt in SolidWorks</em></h2>
+      </div>
+      <div class="body">
+        <p>Given a semester to reverse-engineer any object, I chose the MSR PocketRocket that comes on every backpacking trip. I measured each part, modeled it, and constrained the pot-support prongs to pivot and fold exactly like the real stove.</p>
+      </div>
+    </div>
+    <div class="msr-row">
+      <figure>
+        <img src="images/msr-stove-photo.webp" alt="The real MSR PocketRocket stove on a red IsoPro fuel canister" loading="lazy" width="700" height="700">
+        <figcaption><b>The stove</b>MSR PocketRocket on an IsoPro canister.</figcaption>
+      </figure>
+      <figure>
+        <img src="images/msr-stove-cad.png" alt="Full SolidWorks assembly of the same stove on a fuel canister, from a matching angle" loading="lazy" width="635" height="757">
+        <figcaption><b>The model</b>My SolidWorks assembly, every part measured by hand.</figcaption>
+      </figure>
+      <p class="field-note">Every prong folds down on its real hinge. The model moves the way the stove does in camp.</p>
+    </div>
+    <figure class="msr-drawing">
+      <div class="sheet"><img src="images/msr-core-drawing.png" alt="Engineering drawing of the stove's core top: front, top and section A-A views, details B, C and E, and an isometric view" loading="lazy" width="2200" height="1700"></div>
+      <figcaption><b>Drawing</b>Core top, Part 3A. Section A-A and three detail views (up to 8:1) call out the 0.300" vent ports, Ø.110 hex set screw, and 102° burner seat.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- =========================================================
+     FEATURE 4 — PLANETARY GEAR DRIVE
+     ========================================================= -->
+<section class="feature" id="gear-drive" style="padding-top:0">
+  <div class="wrap gd">
+    <div class="gd-media">
+      <figure>
+        <video src="images/gear-drive-animation.mp4" poster="images/gear-drive-render.png" autoplay muted loop playsinline aria-label="Animation of the planetary gear drive assembly"></video>
+        <figcaption><b>Fusion 360</b>Assembly animation of the two-stage drive.</figcaption>
+      </figure>
+      <figure class="gd-drawing">
+        <div class="sheet"><img src="images/gear-drive-drawing.png" alt="Exploded assembly drawing of the planetary gear wheel drive with a parts list: rubber wheel, three shaft couplings, two custom carriers, six planet gears, two sun gears, two ring gears and the motor" loading="lazy" width="1600" height="2331"></div>
+        <figcaption><b>Drawing</b>Exploded assembly, sheet 1 of 3, with McMaster-Carr part numbers.</figcaption>
+      </figure>
+    </div>
+    <div class="gd-text">
+      <p class="kicker mono">Mechanical Design I · University College Dublin</p>
+      <h2>A wheel drive for a <em>hospital delivery robot</em></h2>
+      <div class="body">
+        <p>The brief: design one rear wheel and everything needed to turn it, for a robot that carries a fixed payload through hospital corridors. Required torque, a tight envelope, static friction and rolling resistance set the constraints.</p>
+        <p>I specified a two-stage planetary reduction between the motor and wheel, modeled it in Fusion 360, sourced the gears and couplings from McMaster-Carr, and estimated the cost to produce it.</p>
+      </div>
+    <div class="gd-side">
+      <figure>
+        <img src="images/planetary-gears.png" alt="Front view of the planetary gear stage: sun, three planets and ring gear" loading="lazy">
+        <figcaption><b>Stage</b>Sun, three planets, ring. Two of these stages stack between the motor and the wheel.</figcaption>
+      </figure>
+      <dl class="gd-parts">
+        <div><dt>Stages</dt><dd>2 planetary</dd></div>
+        <div><dt>Planet gears</dt><dd>6 × 2664N542</dd></div>
+        <div><dt>Sun / ring gears</dt><dd>2 × 2662N332 / 2 × 2696N27</dd></div>
+        <div><dt>Custom parts</dt><dd>2 carriers</dd></div>
+      </dl>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     FEATURE 6 — ELECTRONIC TROUBLE! GAME
+     ========================================================= -->
+<section class="feature" id="trouble" style="padding-top:0">
+  <div class="wrap tr">
+    <figure class="tr-board">
+      <img src="images/trouble-board.png" alt="Finished Trouble! board in black and gold with a lit LED ring in the center and 3D-printed pegs" loading="lazy" width="1000" height="928">
+      <figcaption><b>Finished game</b>Laser-cut top, 3D-printed pegs, and an LED "die" in the center.</figcaption>
+    </figure>
+    <div class="tr-text">
+      <p class="kicker mono">Engineering Projects · CU Boulder · 2024</p>
+      <h2>Trouble!, <em>with the dice rewired</em></h2>
+      <div class="body">
+        <p>Our team rebuilt a board game of our choice with an electronic component. We picked Trouble! and replaced the pop-o-matic die with a circuit: press the button in your corner and an Arduino spins an LED ring, then lights one to six bulbs.</p>
+        <p>We designed the circuit and laid out a custom PCB in Altium. I soldered the resistors and LEDs, wired the buttons, and troubleshot the system during assembly. The housing came together with 3D printing, laser cutting, and shop tools.</p>
+      </div>
+      <div class="tr-pcb">
+        <figure>
+          <img src="images/trouble-pcb-altium.png" alt="Altium PCB layout with resistors R1 to R9, LEDs D1 to D7, switch S1 and header J1" loading="lazy" width="961" height="762">
+          <figcaption><b>Layout</b>Altium design.</figcaption>
+        </figure>
+        <figure>
+          <img src="images/trouble-pcb-built.png" alt="The fabricated green PCB with resistors soldered in place and header pins" loading="lazy" width="640" height="544">
+          <figcaption><b>Built</b>Soldered by hand.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     ESSAY — HERBST PROGRAM / SUSTAINABLE DEVELOPMENT
+     ========================================================= -->
+<section class="feature essay" id="essay">
+  <div class="wrap es-grid">
+    <div class="es-head">
+      <p class="kicker mono">Independent study · Herbst Program for Engineering, Ethics &amp; Society · 2026</p>
+      <h2>Sustainability in our society: <em>bridging education, ethics and industry</em></h2>
+    </div>
+    <blockquote class="es-quote">
+      <p>"Since the definition of sustainability is vague, it becomes susceptible to getting reduced to a buzz word instead of an indication of measurable action."</p>
+    </blockquote>
+    <div class="es-text body">
+      <p>As a Herbst Program Fellow I spent an independent study on sustainable development and wrote this essay, published by CU Boulder's Herbst Program. It starts from the College of Engineering's own vision of "engineering sustainable solutions" and asks what that phrase requires of the people doing the engineering.</p>
+      <p>The argument works on two levels. A broad definition sets shared goals and ethical boundaries, while discipline-specific frameworks turn those goals into practice. Without both, sustainability is hard to carry into the workplace. Cobalt mining for electric vehicle batteries shows the cost of the gap: a "green" supply chain that relies on unsafe, underpaid labor.</p>
+      <p>The essay closes on education. Programs like the University of Nebraska–Lincoln's Partners in Pollution Prevention, which pair technical theory with business pragmatics and field practice, can prepare engineers who know how to work sustainably within their own fields.</p>
+      <p><a href="https://www.colorado.edu/herbst/2026/09/24/sustainability-our-society-bridging-education-ethics-and-industry" target="_blank" rel="noopener">Read the full essay on the Herbst Program site</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     SHORTER PROJECTS
+     ========================================================= -->
+<div class="wrap">
+  <section class="briefs" aria-label="More projects">
+    <p class="mono">Also in the lab</p>
+    <div>
+      <h3>Temperature-sensitive sensors</h3>
+      <p>As a lab assistant in CU's BEEM Lab I ran 20+ tests of sensor systems in LabVIEW and PSTrace, measured material conductivity, and helped prepare figures for publication.</p>
+    </div>
+  </section>
+</div>
+
+<!-- =========================================================
+     LOGBOOK (EXPERIENCE)
+     ========================================================= -->
+<section class="wrap" id="logbook">
+  <div class="section-head">
+    <h2>Experience</h2>
+    <p class="mono soft">Experience, newest first</p>
+  </div>
+  <h3 class="log-group">Internships</h3>
+  <ol class="log">
+    <li>
+      <p class="when">Jun 2026 – Present</p>
+      <div><h3>Engineering Intern</h3><p class="where">Integrated Water Services · Remote</p></div>
+      <ul>
+        <li>Review submittals and permits; research implementation plans for new projects.</li>
+        <li>Prepare technical reports, presentations and spreadsheets for clients and engineers.</li>
+        <li>Mark up and revise drawings in AutoCAD and Civil 3D.</li>
+      </ul>
+    </li>
+    <li>
+      <p class="when">Jun 2025 – Dec 2025</p>
+      <div><h3>Mechanical Engineering Intern</h3><p class="where">Denver Water · Denver</p></div>
+      <ul>
+        <li>Built an EES hydraulic model of reservoir outlet works to predict plant inflow.</li>
+        <li>Sized an HPU oil reservoir heater from a combined heat transfer analysis.</li>
+        <li>Wrote two project summaries; verified 20+ construction drawings.</li>
+      </ul>
+    </li>
+  </ol>
+  <h3 class="log-group">Capstone project</h3>
+  <ol class="log">
+    <li>
+      <p class="when">Aug 2025 – May 2026</p>
+      <div><h3>Logistics Manager &amp; Design Engineer</h3><p class="where">Senior Design, sponsored by Los Alamos National Laboratory · CU Boulder</p></div>
+      <ul>
+        <li>Coordinated schedule and communication across a seven-person team, sponsors and advisors.</li>
+        <li>Machined, assembled and tested a hot tap for 1/8" pressurized tubing.</li>
+      </ul>
+    </li>
+  </ol>
+  <h3 class="log-group">Research</h3>
+  <ol class="log">
+    <li>
+      <p class="when">Nov 2023 – Dec 2024</p>
+      <div><h3>Lab Assistant</h3><p class="where">BEEM Lab, CU Boulder</p></div>
+      <ul>
+        <li>Ran 20+ electrical and sensor tests; analyzed material conductivity and resistivity.</li>
+      </ul>
+    </li>
+  </ol>
+</section>
+
+<!-- =========================================================
+     CREDENTIALS (EDUCATION, CERTS, SKILLS)
+     ========================================================= -->
+<section class="wrap creds" id="credentials">
+  <div>
+    <p class="sub">Education</p>
+    <div class="school">
+      <h3>M.S. Mechanical Engineering</h3>
+      <p>University of Colorado Boulder · Leadership &amp; Management Certificate</p>
+      <p class="mono">Expected May 2027</p>
+    </div>
+    <div class="school">
+      <h3>B.S. Mechanical Engineering, cum laude</h3>
+      <p>University of Colorado Boulder · GPA 3.7 · Dean's List all four years</p>
+      <p>Engineering, Ethics &amp; Society <a href="https://www.colorado.edu/herbst/2026/09/24/sustainability-our-society-bridging-education-ethics-and-industry">Herbst Program Fellow</a></p>
+      <p class="mono">May 2026</p>
+    </div>
+    <div class="school">
+      <h3>Study abroad, Engineering &amp; Architecture</h3>
+      <p>University College Dublin, Ireland</p>
+      <p class="mono">Jan – May 2025</p>
+    </div>
+    <p class="sub">Certifications</p>
+    <div class="cert"><span>Fundamentals of Engineering (FE), Mechanical</span><span>Jan 2026</span></div>
+    <div class="cert"><span>SOLIDWORKS Associate (CSWA)</span><span>Dec 2024</span></div>
+  </div>
+  <div class="skills">
+    <p class="sub">Toolkit</p>
+    <dl>
+      <div><dt>CAD &amp; drafting</dt><dd>SolidWorks, Fusion 360, AutoCAD, Civil 3D, Altium (PCB), GD&amp;T</dd></div>
+      <div><dt>Analysis &amp; code</dt><dd>EES, MATLAB, Python, Excel VBA, Bluebeam</dd></div>
+      <div><dt>Shop</dt><dd>Lathe and mill, CNC, soldering and circuitry, 3D printing, laser cutting</dd></div>
+      <div><dt>Coursework</dt><dd>Sustainable Energy, Thermal Systems, Heat Transfer, Fluid Mechanics, Indoor Air Pollution, Design for Inclusion</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- =========================================================
+     CONTACT + FOOTER
+     ========================================================= -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="contact-grid">
+      <h2>Contact</h2>
+      <div class="contact-links">
+        <p class="mono soft">Email</p>
+        <p><a href="mailto:lsrosario5.lr@gmail.com" id="email">lsrosario5.lr@gmail.com</a><button class="copy-btn" type="button" id="copyEmail">Copy</button></p>
+        <p class="mono soft">Elsewhere</p>
+        <p><a href="files/Lena-Rosario-Resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a> · <a href="https://www.linkedin.com/in/lena-rosario-087213252" target="_blank" rel="noopener">LinkedIn</a> · <a href="files/Lena-Rosario-Engineering-Portfolio.pdf">Portfolio PDF</a></p>
+      </div>
+    </div>
+    <div class="off">
+      <p class="mono">Off the clock</p>
+      <div>
+        <p>Backcountry skiing, backpacking, trail running, crocheting, cooking, and travel.</p>
+        <svg class="profile" id="profile" viewBox="0 0 600 70" preserveAspectRatio="none" aria-hidden="true"></svg>
+      </div>
+    </div>
+    <footer class="foot mono">
+      <span>© 2026 Lena Rosario</span>
+      <span>Boulder, Colorado · Elev. 5,328 ft</span>
+    </footer>
+  </div>
+</section>
+
+<script>
+/* ---------- topographic contours in the hero (generated, never the same twice) ---------- */
+(function () {
+  var cv = document.getElementById('topo'); if (!cv) return;
+  var ctx = cv.getContext('2d');
+  var seed = Math.random() * 1000;
+  function hash(x, y) { var s = Math.sin(x * 127.1 + y * 311.7 + seed) * 43758.5453; return s - Math.floor(s); }
+  function noise(x, y) {
+    var xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+    var u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+    var a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
+    return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+  }
+  function field(x, y) { return noise(x, y) * .6 + noise(x * 2.1, y * 2.1) * .28 + noise(x * 4.3, y * 4.3) * .12; }
+  function draw() {
+    var r = cv.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = r.width * dpr; cv.height = r.height * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, r.width, r.height);
+    var color = getComputedStyle(document.documentElement).getPropertyValue('--contour').trim();
+    var step = 9, cols = Math.ceil(r.width / step) + 1, rows = Math.ceil(r.height / step) + 1, sc = 0.0042, g = [];
+    for (var j = 0; j < rows; j++) { g[j] = []; for (var i = 0; i < cols; i++) {
+      var fx = i * step / r.width; // fade contours toward the left so the name stays clean
+      g[j][i] = field(i * step * sc, j * step * sc) + fx * .35; } }
+    ctx.strokeStyle = color; ctx.lineCap = 'round'; ctx.globalAlpha = .6;
+    for (var L = 0; L < 18; L++) {
+      var lv = 0.28 + L * 0.04; ctx.lineWidth = (L % 5 === 0) ? 1.2 : 0.6; ctx.beginPath();
+      for (j = 0; j < rows - 1; j++) for (i = 0; i < cols - 1; i++) {
+        var a = g[j][i], b = g[j][i + 1], c = g[j + 1][i + 1], d = g[j + 1][i];
+        var idx = (a > lv ? 8 : 0) | (b > lv ? 4 : 0) | (c > lv ? 2 : 0) | (d > lv ? 1 : 0);
+        if (idx === 0 || idx === 15) continue;
+        var x = i * step, y = j * step;
+        var T = [x + step * (lv - a) / (b - a), y], R = [x + step, y + step * (lv - b) / (c - b)],
+            B = [x + step * (lv - d) / (c - d), y + step], Lf = [x, y + step * (lv - a) / (d - a)];
+        var segs = { 1: [Lf, B], 2: [B, R], 3: [Lf, R], 4: [T, R], 5: [T, Lf, B, R], 6: [T, B], 7: [T, Lf],
+                     8: [T, Lf], 9: [T, B], 10: [T, R, Lf, B], 11: [T, R], 12: [Lf, R], 13: [B, R], 14: [Lf, B] }[idx];
+        for (var k = 0; k < segs.length; k += 2) { ctx.moveTo(segs[k][0], segs[k][1]); ctx.lineTo(segs[k + 1][0], segs[k + 1][1]); }
+      }
+      ctx.stroke();
+    }
+  }
+  draw();
+  var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(draw, 150); });
+  if (window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', draw);
+})();
+
+/* ---------- Denver Water chart (values read from the EES model output) ---------- */
+(function () {
+  var svg = document.getElementById('dwChart'); if (!svg) return;
+  var data = [[5517,145],[5518,172],[5519,195],[5520,215],[5521,233],[5522,250],[5523,266],[5524,281],[5525,296],
+    [5526,310],[5527,323],[5528,336],[5529,348],[5530,360],[5531,371],[5532,382],[5533,393],[5534,403],[5535,413],
+    [5536,423],[5537,432],[5538,441],[5539,450]];
+  var W = 640, H = 380, m = { l: 48, r: 14, t: 14, b: 44 }, x0 = 5515, x1 = 5540, y0 = 100, y1 = 475;
+  function X(v) { return m.l + (v - x0) / (x1 - x0) * (W - m.l - m.r); }
+  function Y(v) { return H - m.b - (v - y0) / (y1 - y0) * (H - m.t - m.b); }
+  var s = '';
+  [100, 200, 300, 400].forEach(function (v) {
+    s += '<line x1="' + m.l + '" x2="' + (W - m.r) + '" y1="' + Y(v) + '" y2="' + Y(v) + '" stroke="var(--rule)" stroke-width="1"/>';
+    s += '<text class="ax" x="' + (m.l - 8) + '" y="' + (Y(v) + 4) + '" text-anchor="end">' + v + '</text>';
+  });
+  [5515, 5520, 5525, 5530, 5535, 5540].forEach(function (v) {
+    s += '<text class="ax" x="' + X(v) + '" y="' + (H - m.b + 20) + '" text-anchor="middle">' + v.toLocaleString() + '</text>';
+  });
+  s += '<text class="ax" x="' + (W - m.r) + '" y="' + (H - 4) + '" text-anchor="end">Water surface elevation (ft)</text>';
+  s += '<text class="ax" x="' + m.l + '" y="' + (m.t - 2) + '" text-anchor="start" dy="-2">MGD</text>';
+  // full-open curve (dashed where throttled)
+  var pts = data.map(function (d) { return X(d[0]) + ',' + Y(d[1]); });
+  s += '<polyline points="' + pts.join(' ') + '" fill="none" stroke="var(--water)" stroke-width="1.4" stroke-dasharray="3 4" opacity=".6"/>';
+  // delivered flow: curve up to throttle point, then capped at 250
+  var del = data.filter(function (d) { return d[0] <= 5522; }).map(function (d) { return X(d[0]) + ',' + Y(d[1]); });
+  del.push(X(5539) + ',' + Y(250));
+  var area = 'M' + X(5517) + ',' + Y(y0) + ' L' + del.join(' L') + ' L' + X(5539) + ',' + Y(y0) + ' Z';
+  s += '<path d="' + area + '" fill="var(--water)" opacity=".10"/>';
+  s += '<polyline points="' + del.join(' ') + '" fill="none" stroke="var(--water)" stroke-width="2.6" stroke-linejoin="round"/>';
+  s += '<circle cx="' + X(5522) + '" cy="' + Y(250) + '" r="5" fill="var(--yellow)" stroke="var(--ink)" stroke-width="1.2"/>';
+  s += '<text class="note-txt" x="' + (X(5522) + 12) + '" y="' + (Y(250) + 22) + '">Valves begin throttling at ≈ 5,522 ft</text>';
+  s += '<text class="note-txt" x="' + (X(5531) - 6) + '" y="' + (Y(371) - 14) + '" text-anchor="end">Valves fully open</text>';
+  s += '<text class="note-txt" x="' + X(5539) + '" y="' + (Y(250) - 10) + '" text-anchor="end">Plant max, 250 MGD</text>';
+  svg.innerHTML = s;
+})();
+
+/* ---------- footer: an elevation profile, like a trail map ---------- */
+(function () {
+  var svg = document.getElementById('profile'); if (!svg) return;
+  var p = [], n = 60;
+  for (var i = 0; i <= n; i++) {
+    var t = i / n, y = 52 - 30 * Math.sin(t * Math.PI) - 8 * Math.sin(t * 9.1) - 4 * Math.sin(t * 23);
+    p.push((t * 600).toFixed(1) + ',' + y.toFixed(1));
+  }
+  svg.innerHTML = '<polyline points="' + p.join(' ') + '" fill="none" stroke="var(--ink-soft)" stroke-width="1.2" vector-effect="non-scaling-stroke"/>' +
+    '<polygon points="0,70 ' + p.join(' ') + ' 600,70" fill="var(--contour)" opacity=".35"/>';
+})();
+
+/* ---------- chiller plant: day / night schematic ---------- */
+(function () {
+  var img = document.getElementById('chImg'), day = document.getElementById('chDay'), night = document.getElementById('chNight');
+  if (!img) return;
+  new Image().src = 'images/chiller-plant-night.png'; // preload so the switch is instant
+  function show(isDay) {
+    img.src = isDay ? 'images/chiller-plant-day.png' : 'images/chiller-plant-night.png';
+    img.alt = (isDay ? 'Daytime' : 'Nighttime') + ' system schematic: data center service-water loop, glycol loop, evaporative cooling tower and two-stage R-134a refrigeration cycle with every state point labeled';
+    day.setAttribute('aria-pressed', isDay); night.setAttribute('aria-pressed', !isDay);
+  }
+  day.addEventListener('click', function () { show(true); });
+  night.addEventListener('click', function () { show(false); });
+})();
+
+/* ---------- copy email ---------- */
+document.getElementById('copyEmail').addEventListener('click', function () {
+  var btn = this, txt = document.getElementById('email').textContent;
+  function done(ok) { btn.textContent = ok ? 'Copied' : 'Select it'; setTimeout(function () { btn.textContent = 'Copy'; }, 1800); }
+  if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () { done(true); }, function () { done(false); });
+  else done(false);
+});
+
+/* ---------- respect reduced motion for the gear animation ---------- */
+if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  var v = document.querySelector('video'); if (v) { v.removeAttribute('autoplay'); v.pause(); v.controls = true; }
+}
+</script>
+</body>
+</html>
